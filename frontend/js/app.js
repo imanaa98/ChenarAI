@@ -1,0 +1,1 @@
+console.log('Chenar AI v0.1');
