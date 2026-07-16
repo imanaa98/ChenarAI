@@ -1,1 +1,1 @@
-console.log('Chenar AI v0.1');
+function send(){let t=document.getElementById('t');if(!t.value)return;let c=document.getElementById('chat');c.innerHTML+=`<div class='msg'>${t.value}</div><div class='msg'>در نسخه بعدی پاسخ هوشمند اضافه می‌شود.</div>`;t.value='';}
