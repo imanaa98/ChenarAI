@@ -64,20 +64,17 @@
             transition: var(--transition);
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--text-light); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
-        /* Layout */
         .app {
             display: flex;
             height: 100vh;
             width: 100vw;
         }
 
-        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--bg-sidebar);
@@ -231,7 +228,6 @@
             right: 20px;
         }
 
-        /* Main Content */
         .main {
             flex: 1;
             display: flex;
@@ -287,7 +283,6 @@
             display: none;
         }
 
-        /* Chat Area */
         .chat-container {
             flex: 1;
             overflow-y: auto;
@@ -334,7 +329,6 @@
             line-height: 1.7;
         }
 
-        /* Service Cards */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -395,7 +389,6 @@
             line-height: 1.5;
         }
 
-        /* Messages */
         .messages {
             display: none;
             flex-direction: column;
@@ -454,13 +447,13 @@
             line-height: 1.8;
             font-size: 15px;
             word-wrap: break-word;
+            white-space: pre-line;
         }
 
         .message.user .message-content {
             color: white;
         }
 
-        /* Typing Animation */
         .typing-indicator {
             display: flex;
             gap: 4px;
@@ -483,7 +476,6 @@
             40% { transform: scale(1); opacity: 1; }
         }
 
-        /* Input Area */
         .input-area {
             padding: 12px 20% 24px;
             background: var(--bg-primary);
@@ -561,7 +553,6 @@
             margin-top: 8px;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .message { padding: 24px 10%; }
             .input-area { padding: 12px 10% 24px; }
@@ -582,7 +573,6 @@
             .services-grid { grid-template-columns: 1fr; }
         }
 
-        /* Overlay */
         .overlay {
             display: none;
             position: fixed;
@@ -593,7 +583,6 @@
 
         .overlay.active { display: block; }
 
-        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -614,196 +603,156 @@
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
-
-        /* Markdown-like styling in messages */
-        .message-content strong { font-weight: 700; }
-        .message-content em { font-style: italic; }
-        .message-content code {
-            background: rgba(0,0,0,0.05);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 13px;
-        }
-        .message.user .message-content code {
-            background: rgba(255,255,255,0.2);
-        }
-        .message-content pre {
-            background: rgba(0,0,0,0.05);
-            padding: 12px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 8px 0;
-        }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-icon"><i class="fas fa-robot"></i></div>
                 <div class="logo-text">کافی نت چنار AI</div>
             </div>
-
-            <button class="new-chat-btn" onclick="ChatApp.newChat()">
+            <button class="new-chat-btn" id="new-chat-sidebar">
                 <i class="fas fa-plus"></i>
                 <span>گفتگوی جدید</span>
             </button>
-
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-title">خدمات</div>
-                    <div class="nav-item active" onclick="ChatApp.showService('chat')">
+                    <div class="nav-item active" data-service="chat">
                         <i class="fas fa-comments"></i>
                         <span>چت هوشمند</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('notifications')">
+                    <div class="nav-item" data-service="notifications">
                         <i class="fas fa-gavel"></i>
                         <span>ابلاغیه قضایی</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('social')">
+                    <div class="nav-item" data-service="social">
                         <i class="fas fa-hospital"></i>
                         <span>تامین اجتماعی</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('health')">
+                    <div class="nav-item" data-service="health">
                         <i class="fas fa-heartbeat"></i>
                         <span>بیمه سلامت</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('subsidy')">
+                    <div class="nav-item" data-service="subsidy">
                         <i class="fas fa-hand-holding-usd"></i>
                         <span>یارانه</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('idcard')">
+                    <div class="nav-item" data-service="idcard">
                         <i class="fas fa-id-card"></i>
                         <span>کارت ملی</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('passport')">
+                    <div class="nav-item" data-service="passport">
                         <i class="fas fa-passport"></i>
                         <span>گذرنامه</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('books')">
+                    <div class="nav-item" data-service="books">
                         <i class="fas fa-book"></i>
                         <span>کتاب درسی</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showService('plates')">
+                    <div class="nav-item" data-service="plates">
                         <i class="fas fa-car"></i>
                         <span>تعویض پلاک</span>
                     </div>
                 </div>
-
                 <div class="nav-section">
                     <div class="nav-title">حساب کاربری</div>
-                    <div class="nav-item" onclick="ChatApp.showToast('به زودی...')">
+                    <div class="nav-item" data-action="profile">
                         <i class="fas fa-user"></i>
                         <span>پروفایل</span>
                     </div>
-                    <div class="nav-item" onclick="ChatApp.showToast('به زودی...')">
+                    <div class="nav-item" data-action="settings">
                         <i class="fas fa-cog"></i>
                         <span>تنظیمات</span>
                     </div>
                 </div>
             </nav>
-
             <div class="sidebar-footer">
-                <div class="theme-toggle" onclick="ChatApp.toggleTheme()">
+                <div class="theme-toggle" id="theme-toggle">
                     <span><i class="fas fa-moon" style="margin-left:8px;"></i> حالت تاریک</span>
                     <div class="toggle-switch"></div>
                 </div>
             </div>
         </aside>
 
-        <!-- Overlay for mobile -->
-        <div class="overlay" id="overlay" onclick="ChatApp.toggleSidebar()"></div>
+        <div class="overlay" id="overlay"></div>
 
-        <!-- Main Content -->
         <main class="main">
             <header class="main-header">
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <button class="header-btn mobile-menu-btn" onclick="ChatApp.toggleSidebar()">
+                    <button class="header-btn mobile-menu-btn" id="mobile-menu-btn">
                         <i class="fas fa-bars"></i>
                     </button>
                     <div class="header-title" id="page-title">چت هوشمند</div>
                 </div>
                 <div class="header-actions">
-                    <button class="header-btn" onclick="ChatApp.newChat()" title="گفتگوی جدید">
+                    <button class="header-btn" id="new-chat-header" title="گفتگوی جدید">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button class="header-btn" onclick="ChatApp.showToast('به زودی...')" title="اشتراک‌گذاری">
+                    <button class="header-btn" id="share-btn" title="اشتراک‌گذاری">
                         <i class="fas fa-share-alt"></i>
                     </button>
                 </div>
             </header>
 
             <div class="chat-container" id="chat-container">
-                <!-- Welcome Screen -->
                 <div class="welcome-screen" id="welcome-screen">
                     <div class="welcome-icon"><i class="fas fa-robot"></i></div>
                     <h1 class="welcome-title">سلام! 👋</h1>
                     <p class="welcome-subtitle">
                         به کافی نت چنار AI خوش آمدید. من می‌توانم در انجام خدمات دولتی و قضایی به شما کمک کنم. یکی از خدمات زیر را انتخاب کنید یا سوال خود را بپرسید.
                     </p>
-
                     <div class="services-grid">
-                        <div class="service-card" onclick="ChatApp.selectService('notifications')">
+                        <div class="service-card" data-service="notifications">
                             <div class="service-icon blue"><i class="fas fa-gavel"></i></div>
                             <div class="service-name">ابلاغیه قضایی</div>
                             <div class="service-desc">پیگیری و دریافت ابلاغیه‌های قضایی</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('social')">
+                        <div class="service-card" data-service="social">
                             <div class="service-icon green"><i class="fas fa-hospital"></i></div>
                             <div class="service-name">تامین اجتماعی</div>
                             <div class="service-desc">استعلام بیمه و خدمات تامین اجتماعی</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('health')">
+                        <div class="service-card" data-service="health">
                             <div class="service-icon red"><i class="fas fa-heartbeat"></i></div>
                             <div class="service-name">بیمه سلامت</div>
                             <div class="service-desc">استعلام بیمه سلامت و دفترچه درمانی</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('subsidy')">
+                        <div class="service-card" data-service="subsidy">
                             <div class="service-icon orange"><i class="fas fa-hand-holding-usd"></i></div>
                             <div class="service-name">یارانه</div>
                             <div class="service-desc">پیگیری یارانه نقدی و معیشتی</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('idcard')">
+                        <div class="service-card" data-service="idcard">
                             <div class="service-icon purple"><i class="fas fa-id-card"></i></div>
                             <div class="service-name">کارت ملی</div>
                             <div class="service-desc">پیگیری صدور و تعویض کارت ملی</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('passport')">
+                        <div class="service-card" data-service="passport">
                             <div class="service-icon teal"><i class="fas fa-passport"></i></div>
                             <div class="service-name">گذرنامه</div>
                             <div class="service-desc">پیگیری صدور و تعویض گذرنامه</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('books')">
+                        <div class="service-card" data-service="books">
                             <div class="service-icon indigo"><i class="fas fa-book"></i></div>
                             <div class="service-name">کتاب درسی</div>
                             <div class="service-desc">سفارش و پیگیری کتاب درسی</div>
                         </div>
-                        <div class="service-card" onclick="ChatApp.selectService('plates')">
+                        <div class="service-card" data-service="plates">
                             <div class="service-icon pink"><i class="fas fa-car"></i></div>
                             <div class="service-name">تعویض پلاک</div>
                             <div class="service-desc">نوبت‌دهی و پیگیری تعویض پلاک</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Messages -->
                 <div class="messages" id="messages"></div>
             </div>
 
-            <!-- Input -->
             <div class="input-area">
                 <div class="input-wrapper">
-                    <textarea 
-                        class="chat-input" 
-                        id="chat-input" 
-                        placeholder="پیام خود را بنویسید..."
-                        rows="1"
-                        onkeydown="ChatApp.handleKeyDown(event)"
-                        oninput="ChatApp.autoResize(this)"
-                    ></textarea>
-                    <button class="send-btn" id="send-btn" onclick="ChatApp.sendMessage()">
+                    <textarea class="chat-input" id="chat-input" placeholder="پیام خود را بنویسید..." rows="1"></textarea>
+                    <button class="send-btn" id="send-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -906,8 +855,53 @@
 
             init() {
                 this.loadTheme();
-                this.loadMessages();
+                this.bindEvents();
                 document.getElementById('chat-input').focus();
+            },
+
+            bindEvents() {
+                // Sidebar nav items
+                document.querySelectorAll('.nav-item[data-service]').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        const service = e.currentTarget.dataset.service;
+                        this.showService(service);
+                    });
+                });
+
+                // Service cards
+                document.querySelectorAll('.service-card[data-service]').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const service = e.currentTarget.dataset.service;
+                        this.selectService(service);
+                    });
+                });
+
+                // New chat buttons
+                document.getElementById('new-chat-sidebar').addEventListener('click', () => this.newChat());
+                document.getElementById('new-chat-header').addEventListener('click', () => this.newChat());
+
+                // Mobile menu
+                document.getElementById('mobile-menu-btn').addEventListener('click', () => this.toggleSidebar());
+                document.getElementById('overlay').addEventListener('click', () => this.toggleSidebar());
+
+                // Theme toggle
+                document.getElementById('theme-toggle').addEventListener('click', () => this.toggleTheme());
+
+                // Send button
+                document.getElementById('send-btn').addEventListener('click', () => this.sendMessage());
+
+                // Chat input
+                const input = document.getElementById('chat-input');
+                input.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                input.addEventListener('input', (e) => this.autoResize(e.target));
+
+                // Share button
+                document.getElementById('share-btn').addEventListener('click', () => this.showToast('به زودی...'));
+
+                // Profile/Settings
+                document.querySelectorAll('.nav-item[data-action]').forEach(item => {
+                    item.addEventListener('click', () => this.showToast('به زودی...'));
+                });
             },
 
             loadTheme() {
@@ -940,11 +934,9 @@
                 const service = this.services[serviceId];
                 document.getElementById('page-title').textContent = service.title;
 
-                // Update nav active state
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-                event.currentTarget.classList.add('active');
+                document.querySelector(`.nav-item[data-service="${serviceId}"]`)?.classList.add('active');
 
-                // Close sidebar on mobile
                 if (window.innerWidth <= 768) {
                     this.toggleSidebar();
                 }
@@ -955,10 +947,9 @@
                 const service = this.services[serviceId];
                 document.getElementById('page-title').textContent = service.title;
 
-                // Update sidebar active
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                document.querySelector(`.nav-item[data-service="${serviceId}"]`)?.classList.add('active');
 
-                // Start chat with service greeting
                 this.startChat();
                 const greeting = service.responses[Math.floor(Math.random() * service.responses.length)];
                 this.addBotMessage(greeting);
@@ -976,7 +967,7 @@
                 document.getElementById('chat-input').focus();
 
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-                document.querySelector('.nav-item').classList.add('active');
+                document.querySelector('.nav-item[data-service="chat"]')?.classList.add('active');
             },
 
             startChat() {
@@ -1008,7 +999,6 @@
 
                 this.showTyping();
 
-                // Simulate API delay
                 setTimeout(() => {
                     this.hideTyping();
                     const response = this.generateResponse(text);
@@ -1040,7 +1030,6 @@
                 messagesDiv.appendChild(msgDiv);
                 this.scrollToBottom();
 
-                // Typewriter effect
                 const contentDiv = msgDiv.querySelector('.message-content');
                 this.typeWriter(contentDiv, text, 0);
                 this.messages.push({ role: 'assistant', content: text });
@@ -1050,7 +1039,7 @@
                 if (index < text.length) {
                     element.textContent += text.charAt(index);
                     this.scrollToBottom();
-                    setTimeout(() => this.typeWriter(element, text, index + 1), 20);
+                    setTimeout(() => this.typeWriter(element, text, index + 1), 15);
                 }
             },
 
@@ -1086,7 +1075,6 @@
                 const lower = userText.toLowerCase();
                 const service = this.services[this.currentService];
 
-                // Simple keyword matching
                 if (lower.includes('سلام') || lower.includes('درود') || lower.includes('hi')) {
                     return 'سلام! 👋 خوشحالم که اینجایی. چطور می‌توانم به شما کمک کنم؟';
                 }
@@ -1126,7 +1114,6 @@
 • دفترچه بیمه: رایگان';
                 }
 
-                // Service-specific fallback
                 if (service && service.responses) {
                     return service.responses[Math.floor(Math.random() * service.responses.length)];
                 }
@@ -1150,14 +1137,9 @@
                 toast.textContent = message;
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 3000);
-            },
-
-            loadMessages() {
-                // Could load from localStorage or API
             }
         };
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => ChatApp.init());
     </script>
 </body>
